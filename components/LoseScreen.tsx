@@ -25,6 +25,12 @@ export const StyledLoseWrapper = styled.div`
     margin-top: 15px;
     padding-bottom: 30px;
   }
+
+  @media (max-width: 380px) {
+    gap: 12px;
+    margin-top: 12px;
+    padding-bottom: 25px;
+  }
 `;
 
 export const StyledLoseText = styled.h2`
@@ -43,6 +49,10 @@ export const StyledLoseText = styled.h2`
 
   @media (max-width: 480px) {
     font-size: 24px;
+  }
+
+  @media (max-width: 380px) {
+    font-size: 20px;
   }
 `;
 
@@ -130,6 +140,14 @@ export const StyledLoseButton = styled.button`
     font-size: 16px;
     padding: 12px 25px;
     border-radius: 28px;
+  }
+
+  @media (max-width: 380px) {
+    width: 150px;
+    height: 48px;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 24px;
   }
 `;
 

@@ -25,6 +25,7 @@ export const StyledContainer = styled.div`
   min-width: min-content;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 
   @media (max-width: 1200px) {
     width: 85%;
@@ -43,8 +44,15 @@ export const StyledContainer = styled.div`
   @media (max-width: 480px) {
     width: 95%;
     border-width: 10px;
-    margin-top: 20px;
+    margin-top: 15px;
     border-radius: 30px;
+    min-width: 0;
+  }
+
+  @media (max-width: 380px) {
+    border-width: 8px;
+    margin-top: 10px;
+    border-radius: 25px;
   }
 `;
 
@@ -56,6 +64,7 @@ export const StyledContainerImage = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 
   @media (max-width: 768px) {
     border-radius: 20px;

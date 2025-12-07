@@ -27,6 +27,11 @@ export const StyledQuestionWrapper = styled.div`
     padding: 0 10px;
     padding-bottom: 15px;
   }
+
+  @media (max-width: 380px) {
+    margin-top: 15px;
+    padding-bottom: 10px;
+  }
 `;
 export const StyledQuestionHeader = styled.h3`
   font-size: 48px;
@@ -47,6 +52,10 @@ export const StyledQuestionHeader = styled.h3`
   @media (max-width: 480px) {
     font-size: 22px;
   }
+
+  @media (max-width: 380px) {
+    font-size: 18px;
+  }
 `;
 export const StyledQuestion = styled.h4`
   font-size: 48px;
@@ -65,6 +74,10 @@ export const StyledQuestion = styled.h4`
 
   @media (max-width: 480px) {
     font-size: 22px;
+  }
+
+  @media (max-width: 380px) {
+    font-size: 18px;
   }
 `;
 

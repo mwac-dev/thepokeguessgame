@@ -52,7 +52,9 @@ export const StyledWrapper = styled.div`
   align-items: center;
   gap: 20px;
   width: 100%;
+  height: 100%;
   padding: 20px;
+  box-sizing: border-box;
 
   @media (max-width: 1200px) {
     flex-wrap: wrap;
@@ -70,8 +72,10 @@ export const StyledWrapper = styled.div`
   @media (max-width: 480px) {
     flex-direction: column;
     flex-wrap: nowrap;
-    gap: 8px;
-    padding: 8px;
+    gap: 4px;
+    padding: 12px;
+    height: 100%;
+    box-sizing: border-box;
   }
 `;
 
@@ -81,8 +85,6 @@ export const StyledPokeContainer = styled.div`
   align-items: center;
   width: 250px;
   height: 250px;
-  min-width: 250px;
-  min-height: 250px;
   aspect-ratio: 1 / 1;
   z-index: 5;
   background-color: #fff;
@@ -90,7 +92,7 @@ export const StyledPokeContainer = styled.div`
   margin: 20px;
   transition: all 0.5s ease;
   border: 10px solid #ffd344;
-  flex-shrink: 0;
+  flex-shrink: 1;
 
   &.didLose {
     background-color: #ff5362;
@@ -100,8 +102,6 @@ export const StyledPokeContainer = styled.div`
   @media (max-width: 1200px) {
     width: 200px;
     height: 200px;
-    min-width: 200px;
-    min-height: 200px;
     margin: 15px;
     border-width: 8px;
     border-radius: 24px;
@@ -110,21 +110,21 @@ export const StyledPokeContainer = styled.div`
   @media (max-width: 768px) {
     width: 180px;
     height: 180px;
-    min-width: 180px;
-    min-height: 180px;
     margin: 10px;
     border-width: 6px;
     border-radius: 22px;
   }
 
   @media (max-width: 480px) {
-    width: 140px;
-    height: 140px;
-    min-width: 140px;
-    min-height: 140px;
-    margin: 5px;
-    border-width: 5px;
-    border-radius: 20px;
+    flex: 1 1 0;
+    width: auto;
+    height: 0;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+    margin: 4px;
+    border-width: 4px;
+    border-radius: 16px;
+    overflow: hidden;
   }
 `;
 
@@ -179,8 +179,8 @@ export const StyledPokeball = styled.img`
   }
 
   @media (max-width: 480px) {
-    width: 70px;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    width: 45px;
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
   }
 `;
 const bounce = keyframes`
@@ -213,9 +213,9 @@ const shake = keyframes`
 `;
 
 export const StyledPokemonImage = styled.img`
-  padding: 30px;
-  height: 120%;
-  width: 120%;
+  padding: 20px;
+  height: 110%;
+  width: 110%;
 
   image-rendering: optimizeSpeed; /* STOP SMOOTHING, GIVE ME SPEED  */
   image-rendering: -moz-crisp-edges; /* Firefox                        */
@@ -269,6 +269,12 @@ export const StyledPokemonImage = styled.img`
   @media (max-width: 768px) {
     padding: 10px;
   }
+
+  @media (max-width: 480px) {
+    padding: 5px;
+    height: 100%;
+    width: 100%;
+  }
 `;
 export const StyledScore = styled.h1`
   display: flex;
@@ -296,8 +302,8 @@ export const StyledScore = styled.h1`
   }
 
   @media (max-width: 480px) {
-    font-size: 18px;
-    margin: 3px 0;
+    font-size: 14px;
+    margin: 2px 0;
   }
 `;
 export const StyledRadialTimer = styled.div`
@@ -308,6 +314,7 @@ export const StyledRadialTimer = styled.div`
   width: 80px;
   height: 80px;
   overflow: visible;
+  flex-shrink: 1;
 
   @media (max-width: 1200px) {
     width: 70px;
@@ -320,13 +327,13 @@ export const StyledRadialTimer = styled.div`
   }
 
   @media (max-width: 480px) {
-    width: 50px;
-    height: 50px;
+    width: 38px;
+    height: 38px;
   }
 
   &.desktop-only {
     display: flex;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 
     @media (max-width: 1200px) {
       display: none;
@@ -391,6 +398,11 @@ export const StyledTimerWrapper = styled.div`
     width: 100%;
     padding: 10px 0;
   }
+
+  @media (max-width: 480px) {
+    padding: 4px 0;
+    flex: 0 0 auto;
+  }
 `;
 
 export const StyledMiddleWrapper = styled.div`
@@ -410,7 +422,8 @@ export const StyledMiddleWrapper = styled.div`
   @media (max-width: 480px) {
     order: 0;
     width: auto;
-    padding: 5px;
+    padding: 4px;
+    flex: 0 0 auto;
   }
 `;
 type Props = {

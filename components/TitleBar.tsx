@@ -42,6 +42,12 @@ export const StyledTitleBar = styled.div`
     padding: 10px 0;
     min-height: 50px;
   }
+
+  @media (max-width: 380px) {
+    border-radius: 0 0 25px 25px;
+    padding: 8px 0;
+    min-height: 45px;
+  }
 `;
 
 export const StyledTitle = styled.h1`
@@ -62,6 +68,11 @@ export const StyledTitle = styled.h1`
 
   @media (max-width: 480px) {
     font-size: 28px;
+  }
+
+  @media (max-width: 380px) {
+    font-size: 22px;
+    padding: 0 15px;
   }
 `;
 
