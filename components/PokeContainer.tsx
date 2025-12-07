@@ -55,6 +55,7 @@ export const StyledWrapper = styled.div`
   padding: 20px;
 
   @media (max-width: 1200px) {
+    flex-wrap: wrap;
     gap: 15px;
     padding: 15px;
   }
@@ -68,6 +69,7 @@ export const StyledWrapper = styled.div`
 
   @media (max-width: 480px) {
     flex-direction: column;
+    flex-wrap: nowrap;
     gap: 8px;
     padding: 8px;
   }
@@ -305,25 +307,30 @@ export const StyledRadialTimer = styled.div`
   align-items: center;
   width: 80px;
   height: 80px;
-  margin-bottom: 20px;
   overflow: visible;
 
   @media (max-width: 1200px) {
     width: 70px;
     height: 70px;
-    margin-bottom: 15px;
   }
 
   @media (max-width: 768px) {
     width: 60px;
     height: 60px;
-    margin-bottom: 12px;
   }
 
   @media (max-width: 480px) {
     width: 50px;
     height: 50px;
-    margin-bottom: 10px;
+  }
+
+  &.desktop-only {
+    display: flex;
+    margin-bottom: 15px;
+
+    @media (max-width: 1200px) {
+      display: none;
+    }
   }
 `;
 
@@ -373,6 +380,19 @@ export const StyledTimerText = styled.span<{ $color: string }>`
     font-size: 16px;
   }
 `;
+export const StyledTimerWrapper = styled.div`
+  display: none;
+
+  @media (max-width: 1200px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    order: -1;
+    width: 100%;
+    padding: 10px 0;
+  }
+`;
+
 export const StyledMiddleWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -381,9 +401,15 @@ export const StyledMiddleWrapper = styled.div`
   flex-shrink: 0;
   padding: 10px;
 
-  @media (max-width: 768px) {
-    order: -1;
+  @media (max-width: 1200px) {
+    order: 3;
     width: 100%;
+    padding: 15px 5px;
+  }
+
+  @media (max-width: 480px) {
+    order: 0;
+    width: auto;
     padding: 5px;
   }
 `;
@@ -500,8 +526,25 @@ function PokeContainer({
           onClick={loseState() ? () => {} : () => reviewAnswer(pokemonLName)}
         />
       </StyledPokeContainer>
-      <StyledMiddleWrapper>
+      <StyledTimerWrapper>
         <StyledRadialTimer>
+          <StyledTimerSvg viewBox="-10 -10 100 100">
+            <StyledTimerCircleBg cx="40" cy="40" r="36" />
+            <StyledTimerCircleProgress
+              cx="40"
+              cy="40"
+              r="36"
+              $progress={timer / 10}
+              $color={`rgb(${255}, ${Math.round(255 * (timer / 10))}, ${Math.round(255 * (timer / 10))})`}
+            />
+          </StyledTimerSvg>
+          <StyledTimerText $color={`rgb(${255}, ${Math.round(255 * (timer / 10))}, ${Math.round(255 * (timer / 10))})`}>
+            {timer}
+          </StyledTimerText>
+        </StyledRadialTimer>
+      </StyledTimerWrapper>
+      <StyledMiddleWrapper>
+        <StyledRadialTimer className="desktop-only">
           <StyledTimerSvg viewBox="-10 -10 100 100">
             <StyledTimerCircleBg cx="40" cy="40" r="36" />
             <StyledTimerCircleProgress
