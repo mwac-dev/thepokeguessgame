@@ -106,6 +106,30 @@ const bounce = keyframes`
   50% { transform: translateY(-10px); }
 `;
 
+const scorePunch = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
+
+const shake = keyframes`
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25%, 75% {
+    transform: translateX(-3px);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+`;
+
 export const StyledPokemonImage = styled.img`
   padding: 30px;
   height: 120%;
@@ -167,8 +191,18 @@ export const StyledPokemonImage = styled.img`
 export const StyledScore = styled.h1`
   display: flex;
   color: #fff;
-  font-weight: 200;
+  font-weight: 700;
   font-size: 32px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+
+  &.punch {
+    animation: ${scorePunch} 0.3s ease-out;
+  }
+
+  &.shake {
+    animation: ${shake} 0.4s ease-in-out;
+    color: #ff5362;
+  }
 
   @media (max-width: 1200px) {
     font-size: 28px;
@@ -245,6 +279,8 @@ function PokeContainer({
 }: Props) {
   const [timer, setTimer] = useState(10);
   const [restartTimer, setRestartTimer] = useState(false);
+  const [scoreAnim, setScoreAnim] = useState("");
+  const prevScoreRef = useRef(score);
 
   const hideImg = () => {
     if (pokemonImageRight == undefined || pokemonImageLeft == undefined) {
@@ -294,6 +330,23 @@ function PokeContainer({
     };
   }, [timer]);
 
+  // Trigger punch animation on score increase
+  useEffect(() => {
+    if (score > prevScoreRef.current) {
+      setScoreAnim("punch");
+      const timeout = setTimeout(() => setScoreAnim(""), 500);
+      return () => clearTimeout(timeout);
+    }
+    prevScoreRef.current = score;
+  }, [score]);
+
+  // Trigger shake animation on loss
+  useEffect(() => {
+    if (didLose) {
+      setScoreAnim("shake");
+    }
+  }, [didLose]);
+
   return (
     <StyledWrapper>
       <StyledPokeContainer className={loseState()}>
@@ -309,7 +362,7 @@ function PokeContainer({
       <StyledMiddleWrapper>
         <StyledTimer>{timer}</StyledTimer>
         <StyledPokeball src="Pokeball.svg" width={140} />
-        <StyledScore>SCORE: {score}</StyledScore>
+        <StyledScore className={scoreAnim}>SCORE: {score}</StyledScore>
       </StyledMiddleWrapper>
       <StyledPokeContainer className={loseState()}>
         <StyledPokemonImage
