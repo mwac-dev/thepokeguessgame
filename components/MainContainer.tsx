@@ -5,9 +5,10 @@ import styled from "styled-components";
 
 export const StyledContainerWrapper = styled.div`
   display: flex;
-  height: 50%;
+  flex: 1;
   justify-content: center;
   align-items: center;
+  min-height: 0;
 `;
 export const StyledContainer = styled.div`
   display: flex;

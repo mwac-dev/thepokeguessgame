@@ -1,6 +1,14 @@
 import MainContainer from "./MainContainer";
 import Question from "./Question";
 import LoseScreen from "./LoseScreen";
+import styled from "styled-components";
+
+const StyledAppWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+`;
 
 type Props = {
   pokemonLImage: string;
@@ -28,7 +36,7 @@ function PokeGuessApp({
   score,
 }: Props) {
   return (
-    <div>
+    <StyledAppWrapper>
       <MainContainer
         pokemonImageLeft={pokemonLImage}
         pokemonImageRight={pokemonRImage}
@@ -47,7 +55,7 @@ function PokeGuessApp({
           <Question GeneratedQuestion={GeneratedQuestion} />
         )}
       </div>
-    </div>
+    </StyledAppWrapper>
   );
 }
 

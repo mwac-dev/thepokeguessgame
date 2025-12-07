@@ -5,6 +5,7 @@ export const StyledTitleWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 `;
 
 export const StyledTitleBar = styled.div`

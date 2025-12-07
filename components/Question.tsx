@@ -7,8 +7,10 @@ export const StyledQuestionWrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0 20px;
+  padding-bottom: 20px;
   margin: 0;
   margin-top: 50px;
+  flex-shrink: 0;
 
   @media (max-width: 1200px) {
     margin-top: 40px;
@@ -17,11 +19,13 @@ export const StyledQuestionWrapper = styled.div`
   @media (max-width: 768px) {
     margin-top: 30px;
     padding: 0 15px;
+    padding-bottom: 15px;
   }
 
   @media (max-width: 480px) {
     margin-top: 20px;
     padding: 0 10px;
+    padding-bottom: 15px;
   }
 `;
 export const StyledQuestionHeader = styled.h3`

@@ -16,12 +16,14 @@ export const StyledLoseWrapper = styled.div`
   flex-direction: column;
   gap: 20px;
   margin-top: 20px;
+  padding-bottom: 40px;
   justify-content: center;
   align-items: center;
 
   @media (max-width: 768px) {
     gap: 15px;
     margin-top: 15px;
+    padding-bottom: 30px;
   }
 `;
 

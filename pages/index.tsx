@@ -11,10 +11,14 @@ import styled from "styled-components";
 
 export const StyledBackgroundContainer = styled.div`
   background-image: url("Background.png");
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Home: NextPage = () => {
