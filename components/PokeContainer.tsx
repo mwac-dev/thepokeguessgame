@@ -3,6 +3,49 @@ import { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { setTimeout } from "timers";
 
+// Keyframes need to be defined before styled components that use them
+const pokeballWobble = keyframes`
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+  75% {
+    transform: rotate(-3deg);
+  }
+`;
+
+const pokeballFail = keyframes`
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+`;
+
+const overlayFlash = keyframes`
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+
 export const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -83,22 +126,55 @@ export const StyledPokeContainer = styled.div`
   }
 `;
 
+export const StyledPokeballWrapper = styled.div`
+  position: relative;
+  display: flex;
+  transform-origin: center bottom;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  &.wobble {
+    animation: ${pokeballWobble} 0.6s ease-in-out;
+    &::after {
+      background-color: white;
+      animation: ${overlayFlash} 0.6s ease-in-out;
+    }
+  }
+
+  &.fail {
+    animation: ${pokeballFail} 0.5s ease-in-out;
+    &::after {
+      background-color: #ff3333;
+      animation: ${overlayFlash} 0.5s ease-in-out;
+    }
+  }
+`;
+
 export const StyledPokeball = styled.img`
   display: flex;
+  width: 140px;
+  height: auto;
 
   @media (max-width: 1200px) {
     width: 110px;
-    height: auto;
   }
 
   @media (max-width: 768px) {
     width: 90px;
-    height: auto;
   }
 
   @media (max-width: 480px) {
     width: 70px;
-    height: auto;
   }
 `;
 const bounce = keyframes`
@@ -280,6 +356,7 @@ function PokeContainer({
   const [timer, setTimer] = useState(10);
   const [restartTimer, setRestartTimer] = useState(false);
   const [scoreAnim, setScoreAnim] = useState("");
+  const [pokeballAnim, setPokeballAnim] = useState("");
   const prevScoreRef = useRef(score);
 
   const hideImg = () => {
@@ -334,7 +411,11 @@ function PokeContainer({
   useEffect(() => {
     if (score > prevScoreRef.current) {
       setScoreAnim("punch");
-      const timeout = setTimeout(() => setScoreAnim(""), 500);
+      setPokeballAnim("wobble");
+      const timeout = setTimeout(() => {
+        setScoreAnim("");
+        setPokeballAnim("");
+      }, 600);
       return () => clearTimeout(timeout);
     }
     prevScoreRef.current = score;
@@ -344,6 +425,7 @@ function PokeContainer({
   useEffect(() => {
     if (didLose) {
       setScoreAnim("shake");
+      setPokeballAnim("fail");
     }
   }, [didLose]);
 
@@ -361,7 +443,9 @@ function PokeContainer({
       </StyledPokeContainer>
       <StyledMiddleWrapper>
         <StyledTimer>{timer}</StyledTimer>
-        <StyledPokeball src="Pokeball.svg" width={140} />
+        <StyledPokeballWrapper className={pokeballAnim}>
+          <StyledPokeball src="Pokeball.svg" />
+        </StyledPokeballWrapper>
         <StyledScore className={scoreAnim}>SCORE: {score}</StyledScore>
       </StyledMiddleWrapper>
       <StyledPokeContainer className={loseState()}>
