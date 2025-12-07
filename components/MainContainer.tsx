@@ -21,8 +21,30 @@ export const StyledContainer = styled.div`
   background-clip: content-box, border-box;
   height: 100%;
   width: 60%;
+  min-width: min-content;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 1200px) {
+    width: 85%;
+    border-width: 25px;
+    margin-top: 60px;
+    border-radius: 50px;
+  }
+
+  @media (max-width: 768px) {
+    width: 95%;
+    border-width: 15px;
+    margin-top: 30px;
+    border-radius: 35px;
+  }
+
+  @media (max-width: 480px) {
+    width: 95%;
+    border-width: 10px;
+    margin-top: 20px;
+    border-radius: 30px;
+  }
 `;
 
 export const StyledContainerImage = styled.div`
@@ -32,7 +54,13 @@ export const StyledContainerImage = styled.div`
   height: 100%;
   width: 100%;
   justify-content: center;
-  align-items: center; ;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    border-radius: 20px;
+    background-size: cover;
+    background-position: center;
+  }
 `;
 
 type Props = {

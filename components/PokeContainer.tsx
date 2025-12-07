@@ -1,6 +1,6 @@
 import { clear } from "console";
 import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { setTimeout } from "timers";
 
 export const StyledWrapper = styled.div`
@@ -9,6 +9,25 @@ export const StyledWrapper = styled.div`
   align-items: center;
   gap: 20px;
   width: 100%;
+  padding: 20px;
+
+  @media (max-width: 1200px) {
+    gap: 15px;
+    padding: 15px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
 `;
 
 export const StyledPokeContainer = styled.div`
@@ -17,21 +36,76 @@ export const StyledPokeContainer = styled.div`
   align-items: center;
   width: 250px;
   height: 250px;
+  min-width: 250px;
+  min-height: 250px;
+  aspect-ratio: 1 / 1;
   z-index: 5;
   background-color: #fff;
   border-radius: 28px;
   margin: 20px;
   transition: all 0.5s ease;
   border: 10px solid #ffd344;
+  flex-shrink: 0;
+
   &.didLose {
     background-color: #ff5362;
     border: 10px solid #fff;
+  }
+
+  @media (max-width: 1200px) {
+    width: 200px;
+    height: 200px;
+    min-width: 200px;
+    min-height: 200px;
+    margin: 15px;
+    border-width: 8px;
+    border-radius: 24px;
+  }
+
+  @media (max-width: 768px) {
+    width: 180px;
+    height: 180px;
+    min-width: 180px;
+    min-height: 180px;
+    margin: 10px;
+    border-width: 6px;
+    border-radius: 22px;
+  }
+
+  @media (max-width: 480px) {
+    width: 140px;
+    height: 140px;
+    min-width: 140px;
+    min-height: 140px;
+    margin: 5px;
+    border-width: 5px;
+    border-radius: 20px;
   }
 `;
 
 export const StyledPokeball = styled.img`
   display: flex;
+
+  @media (max-width: 1200px) {
+    width: 110px;
+    height: auto;
+  }
+
+  @media (max-width: 768px) {
+    width: 90px;
+    height: auto;
+  }
+
+  @media (max-width: 480px) {
+    width: 70px;
+    height: auto;
+  }
 `;
+const bounce = keyframes`
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+`;
+
 export const StyledPokemonImage = styled.img`
   padding: 30px;
   height: 120%;
@@ -44,18 +118,21 @@ export const StyledPokemonImage = styled.img`
   image-rendering: pixelated; /* Chrome */
   image-rendering: optimize-contrast; /* CSS3 Proposed                  */
   -ms-interpolation-mode: nearest-neighbor; /* IE8+                           */
-  transition: all 0.3s ease-out;
-  :hover {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
+  
+  &:hover {
     cursor: pointer;
-
     width: 140%;
     height: 140%;
+    animation: ${bounce} 1s infinite;
   }
 
-  :active {
-    width: 120%;
-    height: 120%;
+  &:active {
+    width: 110%;
+    height: 110%;
+    transform: scale(0.95);
   }
+  
   animation-timing-function: cubic-bezier(1, 1, 1, 0.75);
 
   &.load-anim {
@@ -66,10 +143,12 @@ export const StyledPokemonImage = styled.img`
     0% {
       width: 0%;
       height: 50%;
+      opacity: 0;
     }
     85% {
       width: 140%;
       height: 140%;
+      opacity: 1;
     }
     90% {
       width: 100%;
@@ -80,24 +159,64 @@ export const StyledPokemonImage = styled.img`
       height: 120%;
     }
   }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 export const StyledScore = styled.h1`
   display: flex;
   color: #fff;
   font-weight: 200;
   font-size: 32px;
+
+  @media (max-width: 1200px) {
+    font-size: 28px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+    margin: 5px 0;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+    margin: 3px 0;
+  }
 `;
 export const StyledTimer = styled.h1`
   display: flex;
   color: #fff;
   font-weight: 200;
   font-size: 32px;
+
+  @media (max-width: 1200px) {
+    font-size: 28px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+    margin: 5px 0;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+    margin: 3px 0;
+  }
 `;
 export const StyledMiddleWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  flex-shrink: 0;
+  padding: 10px;
+
+  @media (max-width: 768px) {
+    order: -1;
+    width: 100%;
+    padding: 5px;
+  }
 `;
 type Props = {
   pokemonImageRight: string;
