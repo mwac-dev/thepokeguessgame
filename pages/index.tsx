@@ -43,54 +43,83 @@ const Home: NextPage = () => {
   const [pokemonRight, pokemonLeft] = generatePokemon();
 
   const chosenQuestion = (pokemonR: any, pokemonL: any) => {
-    let chosenPokemon = [pokemonR, pokemonL][Math.floor(Math.random() * 2)];
-    setSelectedPokemon(chosenPokemon);
-    const typeOfQuestion = Math.random() * 1;
+    const randomPick = [pokemonR, pokemonL][Math.floor(Math.random() * 2)];
 
-    if (typeOfQuestion > 0.7) {
-      if (pokemonR?.legendaryStatus !== pokemonL?.legendaryStatus) {
-        if (pokemonR?.legendaryStatus === true) {
-          chosenPokemon = pokemonR;
-          setSelectedPokemon(chosenPokemon);
-        } else {
-          chosenPokemon = pokemonL;
-          setSelectedPokemon(chosenPokemon);
-        }
-        setPokemonQuestion("is a Legendary pokemon?");
-      } else if (pokemonR?.abilities !== pokemonL?.abilities) {
-        setPokemonQuestion(
-          "has the ability '" + chosenPokemon?.abilities + "' ?"
-        );
-      } else if (pokemonR?.name !== pokemonL?.name) {
-        setPokemonQuestion("has the name '" + chosenPokemon?.name + "' ?");
-      }
-    } else if (typeOfQuestion > 0.5 && typeOfQuestion < 0.7) {
-      if (pokemonR?.weight !== pokemonL?.weight) {
-        if (pokemonR?.weight > pokemonL?.weight) {
-          chosenPokemon = pokemonR;
-          setSelectedPokemon(chosenPokemon);
-        } else {
-          chosenPokemon = pokemonL;
-          setSelectedPokemon(chosenPokemon);
-        }
-        setPokemonQuestion("is heavier ?");
-      }
-    } else if (typeOfQuestion > 0.25 && typeOfQuestion < 0.5) {
-      if (pokemonR?.height !== pokemonL?.height) {
-        if (pokemonR?.height > pokemonL?.height) {
-          chosenPokemon = pokemonR;
-          setSelectedPokemon(chosenPokemon);
-        } else {
-          chosenPokemon = pokemonL;
-          setSelectedPokemon(chosenPokemon);
-        }
-        setPokemonQuestion("is taller ?");
-      }
-    } else if (typeOfQuestion >= 0 && typeOfQuestion < 0.25) {
-      if (pokemonR?.name !== pokemonL?.name) {
-        setPokemonQuestion("has the name '" + chosenPokemon?.name + "' ?");
+    const questionGenerators = [
+      // Legendary question (30% chance)
+      {
+        weight: 0.3,
+        canAsk: () => pokemonR?.legendaryStatus !== pokemonL?.legendaryStatus,
+        generate: () => ({
+          pokemon: pokemonR?.legendaryStatus ? pokemonR : pokemonL,
+          question: "is a Legendary pokemon?",
+        }),
+      },
+      // Weight question (20% chance)
+      {
+        weight: 0.2,
+        canAsk: () => pokemonR?.weight !== pokemonL?.weight,
+        generate: () => ({
+          pokemon: pokemonR?.weight > pokemonL?.weight ? pokemonR : pokemonL,
+          question: "is heavier?",
+        }),
+      },
+      // Height question (25% chance)
+      {
+        weight: 0.25,
+        canAsk: () => pokemonR?.height !== pokemonL?.height,
+        generate: () => ({
+          pokemon: pokemonR?.height > pokemonL?.height ? pokemonR : pokemonL,
+          question: "is taller?",
+        }),
+      },
+      // Ability question (part of legendary fallback)
+      {
+        weight: 0.1,
+        canAsk: () => pokemonR?.abilities !== pokemonL?.abilities,
+        generate: () => ({
+          pokemon: randomPick,
+          question: `has the ability '${randomPick?.abilities}'?`,
+        }),
+      },
+      // Name question (25% chance, also fallback)
+      {
+        weight: 0.25,
+        canAsk: () => pokemonR?.name !== pokemonL?.name,
+        generate: () => ({
+          pokemon: randomPick,
+          question: `has the name '${randomPick?.name}'?`,
+        }),
+      },
+    ];
+
+    // Filter to only questions that can be asked
+    const availableQuestions = questionGenerators.filter((q) => q.canAsk());
+
+    if (availableQuestions.length === 0) {
+      setSelectedPokemon(randomPick);
+      setPokemonQuestion(`has the name '${randomPick?.name}'?`);
+      return;
+    }
+
+    // Weighted random selection
+    const totalWeight = availableQuestions.reduce((sum, q) => sum + q.weight, 0);
+    let random = Math.random() * totalWeight;
+
+    for (const question of availableQuestions) {
+      random -= question.weight;
+      if (random <= 0) {
+        const result = question.generate();
+        setSelectedPokemon(result.pokemon);
+        setPokemonQuestion(result.question);
+        return;
       }
     }
+
+    // Fallback to last available question
+    const fallback = availableQuestions[availableQuestions.length - 1].generate();
+    setSelectedPokemon(fallback.pokemon);
+    setPokemonQuestion(fallback.question);
   };
   const pokeDataFetch = () => {
     const pokeRightRequest = axios.get(
