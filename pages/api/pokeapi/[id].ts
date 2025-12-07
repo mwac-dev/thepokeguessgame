@@ -1,7 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-const baseUrlBasic = process.env.POKE_API + "/"!;
-const baseUrl = process.env.POKE_API + "-species/"!;
+if (!process.env.POKE_API) {
+  throw new Error("POKE_API environment variable is not defined");
+}
+
+const baseUrlBasic = process.env.POKE_API + "/";
+const baseUrl = process.env.POKE_API + "-species/";
 
 interface RelevantPokemonData {
   sprite: string;

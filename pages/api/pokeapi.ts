@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-const baseUrl = process.env.POKE_API!;
+if (!process.env.POKE_API) {
+  throw new Error("POKE_API environment variable is not defined");
+}
+
+const baseUrl = process.env.POKE_API;
 
 export default async function handler(
   req: NextApiRequest,
