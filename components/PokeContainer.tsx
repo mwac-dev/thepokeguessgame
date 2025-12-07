@@ -164,17 +164,21 @@ export const StyledPokeball = styled.img`
   display: flex;
   width: 140px;
   height: auto;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.3));
 
   @media (max-width: 1200px) {
     width: 110px;
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.3));
   }
 
   @media (max-width: 768px) {
     width: 90px;
+    filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.3));
   }
 
   @media (max-width: 480px) {
     width: 70px;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
   }
 `;
 const bounce = keyframes`
@@ -294,24 +298,79 @@ export const StyledScore = styled.h1`
     margin: 3px 0;
   }
 `;
-export const StyledTimer = styled.h1`
+export const StyledRadialTimer = styled.div`
+  position: relative;
   display: flex;
-  color: #fff;
-  font-weight: 200;
-  font-size: 32px;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+  overflow: visible;
 
   @media (max-width: 1200px) {
-    font-size: 28px;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 15px;
   }
 
   @media (max-width: 768px) {
-    font-size: 22px;
-    margin: 5px 0;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 12px;
   }
 
   @media (max-width: 480px) {
-    font-size: 18px;
-    margin: 3px 0;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+`;
+
+export const StyledTimerSvg = styled.svg`
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+  transform: rotate(-90deg);
+  overflow: visible;
+`;
+
+export const StyledTimerCircleBg = styled.circle`
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 6;
+`;
+
+export const StyledTimerCircleProgress = styled.circle<{ $progress: number; $color: string }>`
+  fill: none;
+  stroke: ${props => props.$color};
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 226;
+  stroke-dashoffset: ${props => 226 - (226 * props.$progress)};
+  transition: stroke-dashoffset 0.3s ease, stroke 0.3s ease;
+  filter: drop-shadow(0 0 6px ${props => props.$color});
+`;
+
+export const StyledTimerText = styled.span<{ $color: string }>`
+  font-size: 28px;
+  font-weight: 700;
+  color: ${props => props.$color};
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+
+  @media (max-width: 1200px) {
+    font-size: 24px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
   }
 `;
 export const StyledMiddleWrapper = styled.div`
@@ -442,7 +501,21 @@ function PokeContainer({
         />
       </StyledPokeContainer>
       <StyledMiddleWrapper>
-        <StyledTimer>{timer}</StyledTimer>
+        <StyledRadialTimer>
+          <StyledTimerSvg viewBox="-10 -10 100 100">
+            <StyledTimerCircleBg cx="40" cy="40" r="36" />
+            <StyledTimerCircleProgress
+              cx="40"
+              cy="40"
+              r="36"
+              $progress={timer / 10}
+              $color={`rgb(${255}, ${Math.round(255 * (timer / 10))}, ${Math.round(255 * (timer / 10))})`}
+            />
+          </StyledTimerSvg>
+          <StyledTimerText $color={`rgb(${255}, ${Math.round(255 * (timer / 10))}, ${Math.round(255 * (timer / 10))})`}>
+            {timer}
+          </StyledTimerText>
+        </StyledRadialTimer>
         <StyledPokeballWrapper className={pokeballAnim}>
           <StyledPokeball src="Pokeball.svg" />
         </StyledPokeballWrapper>
